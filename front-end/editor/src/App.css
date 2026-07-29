@@ -91,7 +91,7 @@ footer a:hover {
 
 .mainWrap {
     display: grid;
-    grid-template-columns: 230px 1fr;
+    grid-template-columns: 230px 2fr 1fr;
 }
 
 .aside {
@@ -135,9 +135,36 @@ footer a:hover {
     width: 100%;
     margin-top: 20px;
 }
+
+.copyBtn{
+    width: 100%;
+    margin-top: 20px;
+}
+
 .CodeMirror {
     min-height: calc(100vh - 20px);
     font-size: 20px;
     line-height: 1.6;
     padding-top: 20px;
+}
+
+/* Editor Container */
+.editorWrap {
+    height: 100vh;
+    overflow: hidden;
+    border-right: 1px solid #333;
+}
+
+.outputScreen {
+    height: 100vh;
+    overflow-y: auto;
+    background: #1e1e1e;
+    color: white;
+    padding: 16px;
+}
+
+.outputScreen pre {
+    margin: 0;
+    white-space: pre-wrap;
+    word-break: break-word;
 }

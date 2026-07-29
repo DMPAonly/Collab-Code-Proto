@@ -18,6 +18,7 @@ const EditorPage = () => {
     const { roomId } = useParams();
     const reactNavigator = useNavigate();
     const [clients, setClients] = useState([]);
+    const [output, setOutput] = useState('');
 
     useEffect(() => {
     let isMounted = true;
@@ -101,6 +102,11 @@ const EditorPage = () => {
         reactNavigator('/');
     }
 
+    function runCode() {
+        // Simple handler - view logic placeholder
+        setOutput('Code executed successfully.');
+    }
+
     if (!location.state) {
         return <Navigate to="/" />;
     }
@@ -126,6 +132,9 @@ const EditorPage = () => {
                         ))}
                     </div>
                 </div>
+                <button className="btn runBtn" onClick={runCode}>
+                    Run
+                </button>
                 <button className="btn copyBtn" onClick={copyRoomId}>
                     Copy ROOM ID
                 </button>
@@ -141,6 +150,10 @@ const EditorPage = () => {
                         codeRef.current = code;
                     }}
                 />
+            </div>
+            {/* Blank Output Screen Beside Editor */}
+            <div className="outputScreen">
+                <pre>{output}</pre>
             </div>
         </div>
     );

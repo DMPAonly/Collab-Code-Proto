@@ -9,18 +9,17 @@ import ACTIONS from '../Actions';
 
 const Editor = ({ socketRef, roomId, onCodeChange }) => {
     const editorRef = useRef(null);
+    const textareaRef = useRef(null);
     useEffect(() => {
         async function init() {
-            editorRef.current = Codemirror.fromTextArea(
-                document.getElementById('realtimeEditor'),
-                {
-                    mode: { name: 'javascript', json: true },
-                    theme: 'dracula',
-                    autoCloseTags: true,
-                    autoCloseBrackets: true,
-                    lineNumbers: true,
-                }
-            );
+            if (!editorRef.current && textareaRef.current) {
+            editorRef.current = Codemirror.fromTextArea(textareaRef.current, {
+                mode: { name: 'javascript', json: true },
+                theme: 'dracula',
+                autoCloseTags: true,
+                autoCloseBrackets: true,
+                lineNumbers: true,
+            });
 
             editorRef.current.on('change', (instance, changes) => {
                 const { origin } = changes;
@@ -33,6 +32,7 @@ const Editor = ({ socketRef, roomId, onCodeChange }) => {
                     });
                 }
             });
+        }
         }
         init();
     }, []);
@@ -51,7 +51,7 @@ const Editor = ({ socketRef, roomId, onCodeChange }) => {
         };
     }, [socketRef.current]);
 
-    return <textarea id="realtimeEditor"></textarea>;
+    return <textarea ref={textareaRef} id="realtimeEditor"></textarea>;
 };
 
 export default Editor;
