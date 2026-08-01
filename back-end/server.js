@@ -50,6 +50,15 @@ io.on('connection', (socket) => {
         io.to(socketId).emit(ACTIONS.CODE_CHANGE, { code });
     });
 
+    socket.on(ACTIONS.OUTPUT_CHANGE, ({ roomId, output }) => {
+        // Broadcast output to all clients in the room (including sender or excluding using socket.in)
+        io.in(roomId).emit(ACTIONS.OUTPUT_CHANGE, { output });
+    });
+
+    socket.on(ACTIONS.LANGUAGE_CHANGE, ({ roomId, language }) => {
+        socket.in(roomId).emit(ACTIONS.LANGUAGE_CHANGE, { language });
+    });
+
     socket.on('disconnecting', () => {
         const rooms = [...socket.rooms];
         rooms.forEach((roomId) => {

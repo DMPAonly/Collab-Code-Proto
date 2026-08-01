@@ -168,3 +168,33 @@ footer a:hover {
     white-space: pre-wrap;
     word-break: break-word;
 }
+
+.languageSelectGroup {
+    margin-top: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.languageSelectGroup label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #8be9fd;
+}
+
+.languageSelect {
+    padding: 8px 12px;
+    background: #282a36;
+    color: #f8f8f2;
+    border: 1px solid #44475a;
+    border-radius: 6px;
+    font-size: 14px;
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.2s ease-in-out;
+}
+
+.languageSelect:hover,
+.languageSelect:focus {
+    border-color: #bd93f9;
+}
