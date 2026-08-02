@@ -11,6 +11,7 @@ import {
     useParams,
 } from 'react-router-dom';
 import STARTER_TEMPLATES from '../StartTemplate';
+import ChatPanel from '../components/Chat/ChatPanel';
 
 const EditorPage = () => {
     const languagesId = {'javascript': 63, 'python': 71, 'clike': 50, 'clike-cpp':54, 'clike-java':62, 'clike-csharp':51}
@@ -23,6 +24,7 @@ const EditorPage = () => {
     const [output, setOutput] = useState('');
     const [isExecuting, setIsExecuting] = useState(false);
     const [language, setLanguage] = useState('javascript');
+    const [socket, setSocket] = useState(null);
 
     useEffect(() => {
     let isMounted = true;
@@ -37,7 +39,7 @@ const EditorPage = () => {
         }
 
         socketRef.current = socket;
-
+        setSocket(socket);
         socketRef.current.on('connect_error', (err) => handleErrors(err));
         socketRef.current.on('connect_failed', (err) => handleErrors(err));
 
@@ -279,6 +281,7 @@ const EditorPage = () => {
             <div className="outputScreen">
                 <pre>{output}</pre>
             </div>
+            <ChatPanel socket={socket} userId={location.state?.username} roomId={roomId}/>
         </div>
     );
 };

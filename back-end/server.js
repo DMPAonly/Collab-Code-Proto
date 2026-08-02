@@ -4,6 +4,7 @@ const http = require('http');
 const path = require('path');
 const { Server } = require('socket.io');
 const ACTIONS = require('./Actions');
+//const handleChat = require("./chatHandler");
 
 const server = http.createServer(app);
 const io = new Server(server);
@@ -14,6 +15,7 @@ const io = new Server(server);
 // });
 
 const userSocketMap = {};
+const chatHistory = {};
 function getAllConnectedClients(roomId) {
     // Map
     return Array.from(io.sockets.adapter.rooms.get(roomId) || []).map(
@@ -32,6 +34,15 @@ io.on('connection', (socket) => {
     socket.on(ACTIONS.JOIN, ({ roomId, username }) => {
         userSocketMap[socket.id] = username;
         socket.join(roomId);
+
+        // Initialize history array for room if it doesn't exist
+        if (!chatHistory[roomId]) {
+            chatHistory[roomId] = [];
+        }
+
+        // 2. Send existing chat history ONLY to the newly joined socket
+        socket.emit('chat-history', chatHistory[roomId]);
+
         const clients = getAllConnectedClients(roomId);
         clients.forEach(({ socketId }) => {
             io.to(socketId).emit(ACTIONS.JOINED, {
@@ -69,6 +80,55 @@ io.on('connection', (socket) => {
         });
         delete userSocketMap[socket.id];
         socket.leave();
+    });
+
+    // socket.on("message", async (data) => {
+
+    //     let payload;
+
+    //     try {
+    //         payload = JSON.parse(data.toString());
+    //     } catch (err) {
+    //         console.log("Invalid JSON received");
+    //         return;
+    //     }
+
+        // switch (payload.type) {
+
+        //     case "join": {
+        //         const result = await handleJoin(payload, ws);
+
+        //         if (result.success) {
+        //             console.log(
+        //                 `Users in workspace: ${result.totalUsers}`
+        //             );
+        //         }
+
+        //         break;
+        //     }
+
+        //     case "chat":
+                // await handleChat(payload);
+            //     break;
+
+            // default:
+            //     console.log("Unknown message type");
+            //     break;
+    // }
+
+    // 
+    socket.on(ACTIONS.SEND_MESSAGE, ({ roomId, userId, message, timestamp }) => {
+        // Broadcast the message to all clients in the room (including sender)
+        const newMessage = { userId, message, timestamp };
+
+        // Save to room history
+        if (!chatHistory[roomId]) {
+            chatHistory[roomId] = [];
+        }
+        chatHistory[roomId].push(newMessage);
+
+        // Broadcast to all clients in the room
+        io.in(roomId).emit(ACTIONS.RECEIVE_MESSAGE, newMessage);
     });
 });
 
