@@ -50,16 +50,41 @@ footer a {
 }
 
 .btn {
-    border: none;
-    padding: 10px;
-    border-radius: 5px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
+    border:none;
+    border-radius:8px;
+    padding:12px;
+    font-weight:600;
+    transition:.25s;
 }
 
-.joinBtn,
+.btn:hover{
+    transform:translateY(-2px);
+}
+
+.runBtn{
+    background:#2563eb;
+    color:white;
+}
+
+.runBtn:hover{
+    background:#1d4ed8;
+}
+
+.copyBtn{
+    background:#374151;
+    color:white;
+}
+
+.leaveBtn{
+    background:#ef4444;
+    color:white;
+}
+
+.leaveBtn:hover{
+    background:#dc2626;
+}
+
+/* .joinBtn,
 .leaveBtn {
     background: #4aed88;
     width: 100px;
@@ -69,7 +94,7 @@ footer a {
 .joinBtn:hover,
 .leaveBtn:hover {
     background: #2b824c;
-}
+} */
 
 .createInfo {
     margin: 0 auto;
@@ -92,19 +117,81 @@ footer a:hover {
 .mainWrap {
     display: flex;
     height: 100vh;
-    width: 100vw;
+    width: 100%;
     overflow: hidden;
 }
 
 .aside {
-    width: 230px;
-    background: #1c1e29;
+    /*  */
+    width: 260px;
+    min-width: 260px;
+    background: #171923;
+    border-right: 1px solid #303446;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    overflow: hidden;
+    transition: width 0.3s ease;
+    height: 100vh;
 }
 .asideInner {
-    flex: 1;
+    /* left side bar */
+    padding:18px;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+
+    flex:1;
+    overflow-y: auto;
+}
+.aside.collapsed{
+    width: 0;
+    min-width: 0;
+    border-right: none;
+}
+.aside.open{
+    width: 240px;
+}
+
+.asideInner h3{
+    color:#fff;
+}
+
+.aside.collapsed .asideInner,
+.aside.collapsed .btn {
+    display: none;
+}
+
+.menuBtn{
+    position:absolute;
+    top:15px;
+    left:15px;
+    z-index:1000;
+    width:42px;
+    height:42px;
+    border:none;
+    border-radius:8px;
+    background:#2563eb;
+    color:#fff;
+    cursor:pointer;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:20px;
+    transition:.25s;
+}
+
+.menuBtn:hover{
+    background:#1d4ed8;
+}
+
+.menuBtn{
+    left:15px;
+    transition:left .3s ease;
+}
+
+.aside.open + .workspace .menuBtn{
+    left:255px;
 }
 
 .clientsList {
@@ -122,6 +209,9 @@ footer a:hover {
 }
 .userName {
     margin-top: 10px;
+    color:#ffffff;
+    font-size:15px;
+    font-weight:500;
 }
 
 .logo {
@@ -133,7 +223,7 @@ footer a:hover {
     height: 60px;
 }
 
-.leaveBtn {
+/* .leaveBtn {
     width: 100%;
     margin-top: 20px;
 }
@@ -141,36 +231,71 @@ footer a:hover {
 .copyBtn{
     width: 100%;
     margin-top: 20px;
+} */
+
+.leaveBtn,
+.copyBtn{
+    /* width:100%; */
+    margin-top:10px;
 }
 
 .CodeMirror {
-    min-height: calc(100vh - 20px);
-    font-size: 20px;
+    height: 100% !important;
+    width: 100%;
+    font-size: 15px;
     line-height: 1.6;
-    padding-top: 20px;
+    padding-top: 10px;
 }
 
 /* Editor Container */
 .editorWrap {
     flex: 1; /* Takes remaining center space */
-    position: relative;
-    height: 100%;
+    min-width: 0;
+    height: 100vh;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    /* position: relative;
+    height: 100%;
+    overflow: hidden; */
 }
 
 .outputScreen {
-    width: 380px; /* Set explicit width for output panel */
-    background: #121319;
-    position: relative; /* CRITICAL: Enables bottom-right positioning for chat */
-    height: 100%;
+    /* flex:0 0 340px;
+    min-width:280px;
+    max-width:420px;/* added above lines for output screen */
+    /* background: #121319; */
+    /* position: relative; CRITICAL: Enables bottom-right positioning for chat */
+    /* height: 100%; */
+    /* display: flex; */
+    /* flex-direction: column; */
+    /* width: 380px;
+    min-width: 320px;
+    max-width: 420px;
     display: flex;
-    flex-direction: column;
+    flex-direction: column; */
+    position: relative;
+    width: 360px;
+    min-width:250px;
+    max-width:700px;
+    background:#0f1117;
+    border-left:1px solid #303446;
+    display:flex;
+    flex-direction:column;
+
 }
 
 .outputScreen pre {
     margin: 0;
+    padding: 15px;
     white-space: pre-wrap;
     word-break: break-word;
+
+    color: #ffffff;              /* White text */
+    background: #0f1117;
+    font-family: "Consolas", "Courier New", monospace;
+    font-size: 14px;
+    line-height: 1.6;
 }
 
 .languageSelectGroup {
@@ -187,11 +312,12 @@ footer a:hover {
 }
 
 .languageSelect {
+    height: 42px;
     padding: 8px 12px;
     background: #282a36;
     color: #f8f8f2;
     border: 1px solid #44475a;
-    border-radius: 6px;
+    border-radius: 8px;
     font-size: 14px;
     outline: none;
     cursor: pointer;
@@ -201,6 +327,7 @@ footer a:hover {
 .languageSelect:hover,
 .languageSelect:focus {
     border-color: #bd93f9;
+    background: #323645;
 }
 
 /*Chat*/
@@ -234,10 +361,12 @@ footer a:hover {
 .message strong {
     font-size: 14px;
     margin-bottom: 4px;
+    color: #ffffff;
 }
 
 .message p {
     margin: 0;
+    color: #ffffff;
 }
 
 .my-message {
@@ -294,13 +423,15 @@ footer a:hover {
     width: 330px;
     background-color: #1c1e29;
     border: 1px solid #333742;
-    border-radius: 8px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    border-radius: 12px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
     display: flex;
     flex-direction: column;
     z-index: 999;
     overflow: hidden;
     transition: height 0.2s ease-in-out;
+    backdrop-filter: blur(15px);
+    background: rgba(28, 30, 41, 0.95);
 }
 
 .floatingChatContainer.expanded .chatBody {
@@ -320,6 +451,9 @@ footer a:hover {
     align-items: center;
     cursor: pointer;
     user-select: none;
+    background: #20232f;
+    font-weight: 600;
+    letter-spacing: .3px;
 }
 
 .chatTitle {
@@ -345,6 +479,10 @@ footer a:hover {
 
 /* Ensure outputScreen parent container has relative positioning */
 .outputScreen {
+    background: #0f1117;
+    border-left: 1px solid #303446;
+    display: flex;
+    flex-direction: column;
     position: relative;
     /* ... your existing output screen styles ... */
 }
@@ -391,28 +529,34 @@ footer a:hover {
 
 /* Chat Bubble Styling */
 .message-bubble {
-    padding: 6px 12px;
+     padding: 8px 12px;
     border-radius: 12px;
     font-size: 13px;
-    line-height: 1.4;
+    line-height: 1.5;
+    color: #ffffff;      
+}
+
+.message-bubble span {
+    color: #ffffff;
 }
 
 .message-item.sent .message-bubble {
-    background-color: #2563eb; /* Blue bubble for sent */
-    color: #fff;
+     background: #2563eb;
+    color: #ffffff;
     border-bottom-right-radius: 2px;
 }
 
 .message-item.received .message-bubble {
-    background-color: #2d3748; /* Dark gray for received */
-    color: #e2e8f0;
+    background: #2d3748;
+    color: #ffffff;
     border-bottom-left-radius: 2px;
 }
 
 .message-user {
-    font-size: 10px;
-    color: #a0aec0;
-    margin-bottom: 2px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #ffffff;        /* White */
+    margin-bottom: 4px;
     padding: 0 4px;
 }
 
@@ -466,3 +610,62 @@ footer a:hover {
     display: none; /* Hides content without unmounting the React component */
 }
 
+/* for scrollbar */
+::-webkit-scrollbar{
+    width:8px;
+}
+
+::-webkit-scrollbar-thumb{
+    background:#4b5563;
+    border-radius:20px;
+}
+
+::-webkit-scrollbar-thumb:hover{
+    background:#6b7280;
+}
+
+/* logo */
+
+.logo{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    border-bottom:1px solid #303446;
+}
+
+.message-bubble,
+.message-bubble *,
+.message-user {
+    color: #ffffff !important;
+}
+
+.editorWrap{
+    flex:1;
+    min-width:0;
+    height:100vh;
+    overflow:hidden;
+}
+
+.editorContainer{
+    height:100%;
+}
+
+.editorContainer .CodeMirror{
+    height:100% !important;
+}
+
+.resizeHandle{
+    position:absolute;
+    left:0;
+    top:0;
+    width:6px;
+    height:100%;
+    cursor:col-resize;
+    background:transparent;
+    z-index:100;
+}
+
+.resizeHandle:hover{
+    background:#2563eb;
+}

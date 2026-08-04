@@ -26,9 +26,32 @@ const EditorPage = () => {
     const [language, setLanguage] = useState('javascript');
     const [socket, setSocket] = useState(null);
     const [isChatOpen, setIsChatOpen] = useState(false);
+    const [sidebarOpen,setSidebarOpen] = useState(true);
+    const [outputWidth,setOutputWidth] = useState(360);
+    const isResizing = useRef(false);
+
+    const startResize = () => {
+        isResizing.current = true;
+    }
 
     useEffect(() => {
     let isMounted = true;
+
+    const resize = (e) => {
+            if(!isResizing.current) return;
+
+            const newWidth = window.innerWidth - e.clientX;
+            if(newWidth >= 250 && newWidth <= 700){
+                setOutputWidth(newWidth);
+            }
+        };
+
+        const stopResize = () => {
+            isResizing.current = false;
+        };
+
+        window.addEventListener("mousemove", resize);
+        window.addEventListener("mouseup", stopResize);
 
     const init = async () => {
         const socket = await initSocket();
@@ -38,6 +61,8 @@ const EditorPage = () => {
             socket.disconnect();
             return;
         }
+
+        
 
         socketRef.current = socket;
         setSocket(socket);
@@ -104,6 +129,8 @@ const EditorPage = () => {
         socketRef.current?.off(ACTIONS.OUTPUT_CHANGE);
         socketRef.current?.off(ACTIONS.LANGUAGE_CHANGE);
         socketRef.current?.off(ACTIONS.DISCONNECTED);
+        window.removeEventListener("mousemove", resize);
+        window.removeEventListener("mouseup", stopResize);
     };
 }, []);
 
@@ -221,7 +248,13 @@ const EditorPage = () => {
 
     return (
         <div className="mainWrap">
-            <div className="aside">
+            <button
+                className="menuBtn"
+                onClick={() => setSidebarOpen(!sidebarOpen)}
+            >
+                ☰
+            </button>
+            <div className={`aside ${sidebarOpen ? "open" : "collapsed"}`}>
                 <div className="asideInner">
                     <div className="logo">
                         <img
@@ -279,7 +312,13 @@ const EditorPage = () => {
                 />
             </div>
             {/* Blank Output Screen Beside Editor */}
-            <div className="outputScreen">
+            <div className="outputScreen" 
+                style={{width: `${outputWidth}px`}}
+            >
+                <div 
+                    className="resizeHandle"
+                    onMouseDown={startResize} 
+                ></div>
                 <pre>{output}</pre>
                 {/* Floating Chat Overlay */}
                 <div className={`floatingChatContainer ${isChatOpen ? 'expanded' : 'minimized'}`}>
