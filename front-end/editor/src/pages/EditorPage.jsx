@@ -25,6 +25,7 @@ const EditorPage = () => {
     const [isExecuting, setIsExecuting] = useState(false);
     const [language, setLanguage] = useState('javascript');
     const [socket, setSocket] = useState(null);
+    const [isChatOpen, setIsChatOpen] = useState(false);
 
     useEffect(() => {
     let isMounted = true;
@@ -280,8 +281,19 @@ const EditorPage = () => {
             {/* Blank Output Screen Beside Editor */}
             <div className="outputScreen">
                 <pre>{output}</pre>
+                {/* Floating Chat Overlay */}
+                <div className={`floatingChatContainer ${isChatOpen ? 'expanded' : 'minimized'}`}>
+                    <div className="chatHeader" onClick={() => setIsChatOpen((prev) => !prev)}>
+                        <span className="chatTitle">💬 Project Chat</span>
+                        <button className="toggleBtn">{isChatOpen ? '▼' : '▲'}</button>
+                    </div>
+
+                    {/* Completely unmount chat body when minimized to prevent height overflow */}
+                        <div className="chatBody">
+                            <ChatPanel socket={socket} roomId={roomId} userId={location.state?.username} />
+                        </div>
+                </div>
             </div>
-            <ChatPanel socket={socket} userId={location.state?.username} roomId={roomId}/>
         </div>
     );
 };

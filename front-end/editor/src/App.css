@@ -90,16 +90,18 @@ footer a:hover {
 }
 
 .mainWrap {
-    display: grid;
-    grid-template-columns: 230px 2fr 1fr;
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
 }
 
 .aside {
+    width: 230px;
     background: #1c1e29;
-    padding: 16px;
-    color: #fff;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
 }
 .asideInner {
     flex: 1;
@@ -150,17 +152,19 @@ footer a:hover {
 
 /* Editor Container */
 .editorWrap {
-    height: 100vh;
+    flex: 1; /* Takes remaining center space */
+    position: relative;
+    height: 100%;
     overflow: hidden;
-    border-right: 1px solid #333;
 }
 
 .outputScreen {
-    height: 100vh;
-    overflow-y: auto;
-    background: #1e1e1e;
-    color: white;
-    padding: 16px;
+    width: 380px; /* Set explicit width for output panel */
+    background: #121319;
+    position: relative; /* CRITICAL: Enables bottom-right positioning for chat */
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .outputScreen pre {
@@ -198,3 +202,267 @@ footer a:hover {
 .languageSelect:focus {
     border-color: #bd93f9;
 }
+
+/*Chat*/
+.chat-container {
+    width: 350px;
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #444;
+    padding: 10px;
+}
+
+.message-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 2px 0;
+}
+
+.message {
+    max-width: 70%;
+    padding: 8px 12px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.message strong {
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+.message p {
+    margin: 0;
+}
+
+.my-message {
+    align-self: flex-end;
+    text-align: right;
+    background-color: #2f6fed;
+    color: white;
+}
+
+.other-message {
+    align-self: flex-start;
+    text-align: left;
+    background-color: #2a2a2a;
+}
+
+.message p {
+    margin: 4px 0 0;
+}
+
+.chat-container h2 {
+    margin: 0;
+    padding: 10px;
+    text-align: center;
+}
+
+.chat-input {
+    border-top: 1px solid #444;
+    display: flex;
+    gap: 6px;
+    padding: 8px;
+}
+
+.chat-input input {
+    flex: 1;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #555;
+}
+
+.chat-input button {
+    padding: 8px 14px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+/*chat Overlay*/
+/* Container for the floating widget in the bottom-right corner */
+/* Container for floating widget */
+.floatingChatContainer {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    width: 330px;
+    background-color: #1c1e29;
+    border: 1px solid #333742;
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    z-index: 999;
+    overflow: hidden;
+    transition: height 0.2s ease-in-out;
+}
+
+.floatingChatContainer.expanded .chatBody {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* Header bar that serves as the click toggle */
+.chatHeader {
+    background-color: #282a36;
+    color: #fff;
+    padding: 10px 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+}
+
+.chatTitle {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.toggleBtn {
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+/* Expandable Chat Body */
+.chatBody {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* Ensure outputScreen parent container has relative positioning */
+.outputScreen {
+    position: relative;
+    /* ... your existing output screen styles ... */
+}
+
+/*a little proper*/
+/* --- Main Panel Container --- */
+/* Internal Chat Component Reset */
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 8px;
+    background-color: #1a1c23;
+}
+
+/* --- Message List Container --- */
+.message-list {
+    flex: 1; /* Takes up all available space */
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-right: 4px; /* Space for scrollbar */
+    margin-bottom: 10px;
+}
+
+/* Individual Message Wrapper */
+.message-item {
+    display: flex;
+    flex-direction: column;
+    max-width: 80%; /* Keeps bubbles compact */
+    word-break: break-word; /* Prevents overflow on long text */
+}
+
+.message-item.sent {
+    align-self: flex-end; /* Align user messages to the right */
+}
+
+.message-item.received {
+    align-self: flex-start; /* Align incoming messages to the left */
+}
+
+/* Chat Bubble Styling */
+.message-bubble {
+    padding: 6px 12px;
+    border-radius: 12px;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.message-item.sent .message-bubble {
+    background-color: #2563eb; /* Blue bubble for sent */
+    color: #fff;
+    border-bottom-right-radius: 2px;
+}
+
+.message-item.received .message-bubble {
+    background-color: #2d3748; /* Dark gray for received */
+    color: #e2e8f0;
+    border-bottom-left-radius: 2px;
+}
+
+.message-user {
+    font-size: 10px;
+    color: #a0aec0;
+    margin-bottom: 2px;
+    padding: 0 4px;
+}
+
+/* --- Input Area --- */
+.chat-input {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    background-color: #222531;
+    padding: 6px;
+    border-radius: 6px;
+    border: 1px solid #333742;
+}
+
+.chat-input input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #fff;
+    font-size: 13px;
+    padding: 4px 6px;
+}
+
+.chat-input button {
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.chat-input button:hover {
+    background-color: #1d4ed8;
+}
+
+.floatingChatContainer.expanded {
+    height: 400px;
+}
+
+/* When minimized, force height to fit just the header bar */
+.floatingChatContainer.minimized {
+    height: auto; /* Shrinks cleanly to match header bar height */
+}
+
+.floatingChatContainer.minimized .chatBody {
+    display: none; /* Hides content without unmounting the React component */
+}
+

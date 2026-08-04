@@ -1,6 +1,6 @@
 function MessageItem({ userId, message, currentUserId }) {
 
-    const isMine = Number(userId) === Number(currentUserId);
+    const isMine = userId === currentUserId;
 
     return (
         <div className={isMine ? "message my-message" : "message other-message"}>

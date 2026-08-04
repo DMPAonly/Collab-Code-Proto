@@ -1,8 +1,5 @@
 import { useEffect,useState,useRef } from "react";
 // import {createSocket} from "../../service/websocket";
-
-import "./Chat.css";
-
 import MessageList from "./MessageList";
 import ChatInput from "./ChatInput";
 import ACTIONS from "../../Actions";
@@ -123,8 +120,6 @@ function ChatPanel({socket, roomId, userId}) {
     return (
 
         <div className="chat-container">
-
-            <h2>Project Chat</h2>
 
             <MessageList
                 messages={messages}
